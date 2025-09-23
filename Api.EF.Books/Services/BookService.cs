@@ -1,50 +1,47 @@
-﻿namespace Api.EF.Books.Services;
+﻿using Api.EF.Books.Data;
+using Microsoft.EntityFrameworkCore;
+
+namespace Api.EF.Books.Services;
 
 public class BookService
 {
-    private readonly Dictionary<int, Models.Book> _books = new()
+    public BookService(BookstoreDbContext dbContext)
     {
-        {1, new Models.Book(1, "To Kill a Mockingbird", "Harper Lee", 1960, "Fiction") },
-        {2, new Models.Book(2, "1984", "George Orwell", 1949, "Dystopian") },
-        {3, new Models.Book(3, "The Great Gatsby", "F. Scott Fitzgerald", 1925, "Classic") },
-        {4, new Models.Book(4, "The Catcher in the Rye", "J.D. Salinger", 1951, "Fiction") }
-    };
-
-    public Task<IEnumerable<Models.Book>> GetAllBooksAsync()
-    {
-        return Task.FromResult(_books.Values.AsEnumerable());
+        _dbContext = dbContext;
     }
 
-    public Task<Models.Book?> GetBookByIdAsync(int id)
+    private readonly BookstoreDbContext _dbContext;
+
+    public async Task<IEnumerable<Models.Book>> GetAllBooksAsync()
     {
-        _books.TryGetValue(id, out var book);
-        return Task.FromResult(book);
+        return await _dbContext.Books.ToListAsync();
     }
 
-    public Task<bool> AddBookAsync(Models.Book book)
+    public async Task<Models.Book?> GetBookByIdAsync(int id)
     {
-        if (_books.ContainsKey(book.Id))
+        return await _dbContext.Books.FindAsync(id);
+    }
+
+    public async Task<bool> AddBookAsync(Models.Book book)
+    {
+        var newBook = await _dbContext.Books.AddAsync(book);
+        return await _dbContext.SaveChangesAsync() > 0;
+    }
+
+    public async Task<bool> UpdateBookAsync(Models.Book book)
+    {
+        var updated = _dbContext.Books.Update(book);
+        return await _dbContext.SaveChangesAsync() > 0;
+    }
+
+    public async Task<bool> DeleteBookAsync(int id)
+    {
+        var book = await _dbContext.Books.FindAsync(id);
+        if (book == null)
         {
-            return Task.FromResult(false);
+            return false;
         }
-
-        _books[book.Id] = book;
-        return Task.FromResult(true);
-    }
-
-    public Task<bool> UpdateBookAsync(Models.Book book)
-    {
-        if (!_books.ContainsKey(book.Id))
-        {
-            return Task.FromResult(false);
-        }
-
-        _books[book.Id] = book;
-        return Task.FromResult(true);
-    }
-
-    public Task<bool> DeleteBookAsync(int id)
-    {
-        return Task.FromResult(_books.Remove(id));
+        _dbContext.Books.Remove(book);
+        return await _dbContext.SaveChangesAsync() > 0;
     }
 }

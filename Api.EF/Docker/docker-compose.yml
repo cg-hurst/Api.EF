@@ -1,0 +1,11 @@
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: api_user
+      POSTGRES_DB: bookstore
+      POSTGRES_PASSWORD: password10!
+      POSTGRES_INITDB_ARGS: --auth=scram-sha-256
+
+    ports:
+      - "5432:5432"

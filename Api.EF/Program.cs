@@ -1,7 +1,8 @@
 using Api.EF.Api;
+using Api.EF.Books.Data;
 using Api.EF.Books.Services;
 using Api.EF.Middleware;
-using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,10 +10,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+// Database
+builder.Services
+    .AddDbContext<BookstoreDbContext>(options =>
+        options.UseNpgsql(builder.Configuration.GetConnectionString("BookstoreDbConnection")));
+
 // Register the BookService as a singleton as it keeps state in memory
 builder.Services
-    .AddSingleton<BookService>()
+    .AddTransient<BookService>()
     ;
+
+
 
 var app = builder.Build();
 
