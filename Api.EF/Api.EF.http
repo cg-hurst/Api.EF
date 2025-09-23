@@ -1,0 +1,60 @@
+@Api.EF_HostAddress = https://localhost:7101
+
+GET {{Api.EF_HostAddress}}/health
+Accept: application/json
+
+###
+
+GET {{Api.EF_HostAddress}}/books/
+Accept: application/json
+
+###
+
+GET {{Api.EF_HostAddress}}/books/1
+Accept: application/json
+
+###
+
+POST {{Api.EF_HostAddress}}/books/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": 5,
+  "title": "The Lord of the Rings",
+  "author": "J.R.R. Tolkein",
+  "yearPublished": 1954,
+  "genre": "Fantasy"
+}
+
+###
+
+PUT {{Api.EF_HostAddress}}/books/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": 5,
+  "title": "The Lord of the Rings",
+  "author": "J.R.R. Tolkien",
+  "yearPublished": 1954,
+  "genre": "Fantasy"
+}
+
+###
+
+DELETE {{Api.EF_HostAddress}}/books/5
+Accept: application/json
+
+###
+
+
+GET {{Api.EF_HostAddress}}/books/5
+Accept: application/json
+
+###
+
+GET {{Api.EF_HostAddress}}/crash
+Accept: application/json
+
+###
