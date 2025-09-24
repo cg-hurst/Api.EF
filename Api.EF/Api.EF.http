@@ -71,6 +71,11 @@ Accept: application/json
 
 ###
 
+GET {{Api.EF_HostAddress}}/authors/3/books
+Accept: application/json
+
+###
+
 POST {{Api.EF_HostAddress}}/authors/
 Content-Type: application/json
 Accept: application/json

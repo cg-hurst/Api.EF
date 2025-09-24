@@ -102,6 +102,17 @@ public class BookService
         return MapAuthorDataToAuthor(await _dbContext.Authors.FindAsync(id));
     }
 
+    public async Task<IEnumerable<Book>> GetBooksByAuthorIdAsync(int authorId)
+    {
+        var books = await _dbContext.Books
+            .Include(a => a.Author)
+            .Where(b => b.AuthorId == authorId)
+            .Select(b => MapBookDataToBook(b))
+            .ToListAsync();
+
+        return books.Where(b => b != null)!;
+    }
+
     public async Task<bool> AddAuthorAsync(Author author)
     {
         // Map the DTO to the data model

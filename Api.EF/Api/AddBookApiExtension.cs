@@ -25,6 +25,14 @@ public static class AddBookApiExtension
             .WithName("GetBookById");
 
         app
+            .MapGet("/authors/{id:int}/books", async (int id, BookService service) =>
+            {
+                var books = await service.GetBooksByAuthorIdAsync(id);
+                return books.Any() ? Results.Ok(books) : Results.NoContent();
+            })
+            .WithName("GetBooksByAuthorId");
+
+        app
             .MapPost("/books", async (Book book, BookService service) =>
             {
                 var added = await service.AddBookAsync(book);
