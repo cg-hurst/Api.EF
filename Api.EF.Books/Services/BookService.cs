@@ -24,7 +24,11 @@ public class BookService
 
     public async Task<Book?> GetBookByIdAsync(int id)
     {
-        return MapBookDataToBook(await _dbContext.Books.FindAsync(id));
+        var book = await _dbContext.Books
+            .Include(b => b.Author)
+            .FirstOrDefaultAsync(b => b.Id == id);
+
+        return MapBookDataToBook(book);
     }
 
     public async Task<bool> AddBookAsync(Book book)
