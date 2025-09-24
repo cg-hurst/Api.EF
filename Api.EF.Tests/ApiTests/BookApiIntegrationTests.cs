@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using Api.EF.Books.Models;
+using Api.EF.Books.Data.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Api.EF.Tests.ApiTests
@@ -20,7 +20,7 @@ namespace Api.EF.Tests.ApiTests
             var response = await _client.GetAsync("/books");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            var books = await response.Content.ReadFromJsonAsync<IEnumerable<Book>>();
+            var books = await response.Content.ReadFromJsonAsync<IEnumerable<BookData>>();
             Assert.NotNull(books);
             Assert.NotEmpty(books);
         }
@@ -31,7 +31,7 @@ namespace Api.EF.Tests.ApiTests
             var response = await _client.GetAsync("/books/1");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            var book = await response.Content.ReadFromJsonAsync<Book>();
+            var book = await response.Content.ReadFromJsonAsync<BookData>();
             Assert.NotNull(book);
             Assert.Equal(1, book.Id);
         }
@@ -47,11 +47,11 @@ namespace Api.EF.Tests.ApiTests
         [Fact]
         public async Task AddBook_ReturnsCreated_WhenBookIsValid()
         {
-            var newBook = new Book(5, "New Book", "Author", 2023, "Genre");
+            var newBook = new BookData(5, "New Book", "Author", 2023, "Genre");
             var response = await _client.PostAsJsonAsync("/books", newBook);
 
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-            var createdBook = await response.Content.ReadFromJsonAsync<Book>();
+            var createdBook = await response.Content.ReadFromJsonAsync<BookData>();
             Assert.NotNull(createdBook);
             Assert.Equal(newBook.Id, createdBook.Id);
         }

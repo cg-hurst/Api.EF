@@ -1,4 +1,4 @@
-﻿using Api.EF.Books.Models;
+﻿using Api.EF.Books.Data.Models;
 using Api.EF.Books.Services;
 
 namespace Api.EF.Api

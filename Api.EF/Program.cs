@@ -2,7 +2,9 @@ using Api.EF.Api;
 using Api.EF.Books.Data;
 using Api.EF.Books.Services;
 using Api.EF.Middleware;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,7 @@ app.UseHttpsRedirection();
 
 app
     .AddBookApi()
+    .AddAuthorApi()
     .AddHealthApi()
     ;
 

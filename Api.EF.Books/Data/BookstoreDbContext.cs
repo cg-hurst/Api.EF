@@ -1,4 +1,4 @@
-﻿using Api.EF.Books.Models;
+﻿using Api.EF.Books.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.EF.Books.Data
@@ -7,6 +7,8 @@ namespace Api.EF.Books.Data
     {
         public BookstoreDbContext(DbContextOptions<BookstoreDbContext> options) : base(options) { }
 
-        public DbSet<Book> Books { get; set; }
+        public DbSet<BookData> Books { get; set; }
+
+        public DbSet<AuthorData> Authors { get; set; }
     }
 }

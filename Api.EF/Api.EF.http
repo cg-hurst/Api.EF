@@ -20,9 +20,10 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "id": 11,
-  "title": "The Lord of the Rings 2",
-  "author": "J.R.R. Tolkein",
+  "id": 6,
+  "title": "The Lord of the Rings",
+  "authorId": 6,
+  "authorName": "C. Hurst",
   "yearPublished": 1954,
   "genre": "Fantasy"
 }
@@ -34,22 +35,23 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "id": 11,
+  "id": 6,
   "title": "The Lord of the Rings",
-  "author": "J.R.R. Tolkien",
+  "authorName": "J.R.R. Tolkien",
+  "authorId": 3,
   "yearPublished": 1954,
   "genre": "Fantasy"
 }
 
 ###
 
-DELETE {{Api.EF_HostAddress}}/books/11
+DELETE {{Api.EF_HostAddress}}/books/6
 Accept: application/json
 
 ###
 
 
-GET {{Api.EF_HostAddress}}/books/11
+GET {{Api.EF_HostAddress}}/books/6
 Accept: application/json
 
 ###
@@ -58,3 +60,39 @@ GET {{Api.EF_HostAddress}}/crash
 Accept: application/json
 
 ###
+
+GET {{Api.EF_HostAddress}}/authors/
+Accept: application/json
+
+###
+
+GET {{Api.EF_HostAddress}}/authors/1
+Accept: application/json
+
+###
+
+POST {{Api.EF_HostAddress}}/authors/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": 6,
+  "name": "CHurst"
+}
+
+###
+
+PUT {{Api.EF_HostAddress}}/authors/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": 6,
+  "name": "C. Hurst"
+}
+
+###
+
+DELETE {{Api.EF_HostAddress}}/authors/6
+Content-Type: application/json
+Accept: application/json
