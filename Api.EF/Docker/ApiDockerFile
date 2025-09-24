@@ -1,0 +1,27 @@
+# Use the official .NET SDK image as a build stage
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /app
+
+# Copy the solution file and restore dependencies
+COPY *.sln ./
+COPY Api.EF/*.csproj ./Api.EF/
+COPY Api.EF.Books/*.csproj ./Api.EF.Books/
+COPY Api.EF.Tests/*.csproj ./Api.EF.Tests/
+RUN dotnet restore
+
+# Copy the entire project and build the application
+COPY . ./
+RUN dotnet publish Api.EF/Api.EF.csproj -c Release -o out
+
+# Use the official .NET runtime image as the runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
+WORKDIR /app
+
+# Copy the build output from the build stage
+COPY --from=build /app/out .
+
+# Expose the port the app runs on
+EXPOSE 7101
+
+# Set the entry point for the container
+ENTRYPOINT ["dotnet", "Api.EF.dll"]

@@ -6,6 +6,18 @@ services:
       POSTGRES_DB: bookstore
       POSTGRES_PASSWORD: password10!
       POSTGRES_INITDB_ARGS: --auth=scram-sha-256
-
     ports:
       - "5432:5432"
+
+  api:
+    build:
+      context: ../..
+      dockerfile: ./API.EF/Docker/ApiDockerFile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:7101
+      - ConnectionStrings__BookstoreDbConnection=Host=postgres;Database=bookstore;Username=api_user;Password=password10!
+    ports:
+      - "7101:7101"
+    depends_on:
+      - postgres

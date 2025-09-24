@@ -2,10 +2,8 @@ using Api.EF.Api;
 using Api.EF.Books.Data;
 using Api.EF.Books.Services;
 using Api.EF.Middleware;
-using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,14 +56,17 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
-
 app
     .AddBookApi()
     .AddAuthorApi()
     .AddHealthApi()
     ;
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<BookstoreDbContext>();
+    dbContext.Database.Migrate();
+}
 
 app.Run();
 
