@@ -15,7 +15,7 @@ services:
       dockerfile: ./API.EF/Docker/ApiDockerFile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:7101
+      - ASPNETCORE_URLS=https://+:7101
       - ConnectionStrings__BookstoreDbConnection=Host=postgres;Database=bookstore;Username=api_user;Password=password10!
     ports:
       - "7101:7101"

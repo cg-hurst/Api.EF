@@ -20,6 +20,13 @@ WORKDIR /app
 # Copy the build output from the build stage
 COPY --from=build /app/out .
 
+# Copy the development certificate into the container
+COPY Api.EF/Docker/aspnetapp.pfx  /root/.aspnet/https/aspnetapp.pfx
+
+# Set environment variables for the certificate
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/https/aspnetapp.pfx
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password=CertPassword!
+
 # Expose the port the app runs on
 EXPOSE 7101
 
